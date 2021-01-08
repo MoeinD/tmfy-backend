@@ -16,7 +16,7 @@ app.use(json());
 app.use(
     cookieSession({
         signed: false,
-        secure: true
+        secure: process.env.Node_ENV! == 'test'
     })
 )
 app.use(recentUserRouter);
