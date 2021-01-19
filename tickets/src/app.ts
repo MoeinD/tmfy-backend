@@ -3,6 +3,8 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
+import newRouter from './routes/new';
+
 import { errorHandler, NotFoundError } from '@tmfyticket/common';
 
 const app = express();
@@ -14,6 +16,8 @@ app.use(
         secure: process.env.Node_ENV! == 'test'
     })
 )
+
+app.use(newRouter);
 
 app.all('*', async () => {
     throw new NotFoundError();
