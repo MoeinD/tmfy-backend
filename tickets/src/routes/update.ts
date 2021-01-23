@@ -15,7 +15,8 @@ router.put('/api/tickets/:id', requireAuth,
         if (ticket.userId !== req.currentUser!.id)
             throw new NotAuthorizedError();
 
-        ticket.set({ title: req.body.title, price: req.body.title });
+        ticket.set({ title: req.body.title, price: req.body.price });
+        await ticket.save();
 
         res.send(ticket);
     })
