@@ -5,6 +5,7 @@ import cookieSession from 'cookie-session';
 
 import newRouter from './routes/new';
 import { showTicketRouter } from './routes/show';
+import { indexTikcetRouter } from './routes/index'
 
 import { errorHandler, NotFoundError, currentUser } from '@tmfyticket/common';
 
@@ -22,6 +23,7 @@ app.use(currentUser);
 
 app.use(newRouter);
 app.use(showTicketRouter);
+app.use(indexTikcetRouter);
 
 app.all('*', async () => {
     throw new NotFoundError();
