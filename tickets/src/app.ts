@@ -21,6 +21,7 @@ app.use(
 )
 
 app.use(currentUser);
+console.log('this is ticket service');
 
 app.use(newRouter);
 app.use(showTicketRouter);
