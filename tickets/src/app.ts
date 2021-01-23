@@ -4,8 +4,9 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
 import newRouter from './routes/new';
+import { showTicketRouter } from './routes/show';
 
-import { errorHandler, NotFoundError } from '@tmfyticket/common';
+import { errorHandler, NotFoundError, currentUser } from '@tmfyticket/common';
 
 const app = express();
 app.set('trust proxy', true);
@@ -17,7 +18,10 @@ app.use(
     })
 )
 
+app.use(currentUser);
+
 app.use(newRouter);
+app.use(showTicketRouter);
 
 app.all('*', async () => {
     throw new NotFoundError();
