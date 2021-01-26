@@ -9,7 +9,13 @@ const stan = nats.connect('ticketing', randomBytes(4).toString('hex'), {
 
 stan.on('connect', () => {
     console.log('Listener connected to NATS');
-
+    /**we need ot check and on close 
+     * stop to send the message to listener
+     */
+    stan.on('close', () => {
+        console.log('NATS connection closed');
+        process.exit();
+    })
     /**we need to listen to the subject
      * and add the subscription for it
      */
@@ -39,3 +45,9 @@ stan.on('connect', () => {
     })
 
 })
+
+/**we want to close the process when exit or stop the listner
+ * 
+ */
+process.on('SIGINT', () => stan.close());
+process.on('SIGTERM', () => stan.close());
