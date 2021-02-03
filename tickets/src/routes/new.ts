@@ -2,6 +2,9 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { requireAuth, validationRequest } from '@tmfyticket/common';
 import { Ticket } from '../models/tickets';
+import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
+
 
 const router = express.Router();
 
@@ -13,6 +16,13 @@ router.post('/api/tickets', requireAuth,
 
         const ticket = Ticket.build({ title, price, userId: req.currentUser.id });
         await ticket.save();
+        /**we need to publish the ticket after saving */
+        new TicketCreatedPublisher(natsWrapper.client).publish({
+            id: ticket.id,
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId
+        })
         res.status(200).send(ticket);
     })
 
