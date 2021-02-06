@@ -1,7 +1,8 @@
 import request from 'supertest';
 import { app } from '../../app';
 import mongoose, { mongo } from 'mongoose';
-import { cookie } from 'express-validator';
+import { natsWrapper } from '../../nats-wrapper';
+
 
 const api = '/api/tickets';
 const mongooseId = () => {
@@ -36,4 +37,14 @@ it('update the ticket provided valid inputs', async () => {
     /**we can check the update ticket from the db or make another get reqiest for checking the new value */
     const updateResponse = await request(app).put(`${api}/${response.body.id}`).set('Cookie', cookie).send({ title: 'test new', price: 30 }).expect(200);
     expect(updateResponse.body.title).toEqual('test new');
+})
+
+it('publishes and events ', async () => {
+    const cookie = global.signin();
+
+    const response = await request(app).post(api).set('Cookie', cookie).
+        send({ title: 'test', price: 20 });
+    /**we can check the update ticket from the db or make another get reqiest for checking the new value */
+    await request(app).put(`${api}/${response.body.id}`).set('Cookie', cookie).send({ title: 'test new', price: 30 }).expect(200);
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
 })
