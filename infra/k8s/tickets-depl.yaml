@@ -17,6 +17,8 @@ spec:
           #gcloud image: us.gcr.io/ticketing-dev-300706/tickets
           image: mohammad1977/tickets
           env:
+            - name: SERVICE_URI
+              value: "/api/tickets"
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: NATS_CLIENT_ID
