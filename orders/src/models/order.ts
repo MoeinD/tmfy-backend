@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { OrderStatus } from '@tmfyticket/common';
-
+import { TicketDoc } from './ticket';
 /**this isthe property that we need to create the order 
  * so it is before mongoose
  */
