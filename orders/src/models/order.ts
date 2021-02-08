@@ -4,6 +4,8 @@ import { TicketDoc } from './ticket';
 /**this isthe property that we need to create the order 
  * so it is before mongoose
  */
+
+export { OrderStatus };
 interface OrderAttrs {
     userId: string;
     status: OrderStatus;
