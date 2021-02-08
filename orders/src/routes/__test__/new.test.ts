@@ -58,3 +58,6 @@ it('reserves a ticket ', async () => {
         .send({ ticketId: ticket.id }).expect(201);
 
 })
+
+/**adding todo that shows we need to come back to ti and do it later  */
+it.todo('emits an error created event ');
