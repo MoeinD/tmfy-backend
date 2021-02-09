@@ -5,7 +5,7 @@ import { requireAuth, NotFoundError, NotAuthorizedError } from '@tmfyticket/comm
 
 const router = express.Router();
 
-router.delete('/api/orders:orderId', requireAuth, async (req: Request, res: Response) => {
+router.delete('/api/orders/:orderId', requireAuth, async (req: Request, res: Response) => {
     /**we do not want to delete the order and
      * just want to cancel the order
      */
