@@ -3,6 +3,8 @@ import request from "supertest";
 import { app } from "../../app";
 import { Order, OrderStatus } from '../../models/order';
 import { Ticket } from '../../models/ticket';
+import { natsWrapper } from '../../nats-wrapper';
+
 
 
 
@@ -60,4 +62,15 @@ it('reserves a ticket ', async () => {
 })
 
 /**adding todo that shows we need to come back to ti and do it later  */
-it.todo('emits an error created event ');
+it('emits an error created event ', async () => {
+    const ticket = Ticket.build({
+        title: 'test',
+        price: 20
+    })
+
+    await ticket.save();
+
+    await request(app).post('/api/orders').set('Cookie', global.signin()).send({ ticketId: ticket.id }).expect(201);
+
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
