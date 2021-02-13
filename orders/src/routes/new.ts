@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, validationRequest, NotFoundError, OrderStatus, BadRequestError } from '@tmfyticket/common';
+import { requireAuth, validateRequest, NotFoundError, OrderStatus, BadRequestError } from '@tmfyticket/common';
 import { body } from 'express-validator';
 import mongoose from 'mongoose';
 import { Ticket } from '../models/ticket';
@@ -20,7 +20,7 @@ router.post('/api/orders', requireAuth, [
         .isEmpty()
         .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
         .withMessage('TicketId must be porovide')
-], validationRequest, async (req: Request, res: Response) => {
+], validateRequest, async (req: Request, res: Response) => {
     const { ticketId } = req.body;
     /**find the ticket that user is trying to order in the database */
     const ticket = await Ticket.findById(ticketId);

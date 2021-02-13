@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validationRequest, NotFoundError, requireAuth, NotAuthorizedError } from '@tmfyticket/common';
+import { validateRequest, NotFoundError, requireAuth, NotAuthorizedError } from '@tmfyticket/common';
 import { Ticket } from '../models/tickets';
 import { TicketUpdatePublisher } from '../events/publishers/ticket-update-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -9,7 +9,7 @@ import { natsWrapper } from '../nats-wrapper';
 const router = express.Router();
 
 router.put('/api/tickets/:id', requireAuth,
-    [body('title').not().isEmpty().withMessage('Title is required'), body('price').isFloat({ gt: 0 }).withMessage('Price must be provided and must greater that zero')], validationRequest
+    [body('title').not().isEmpty().withMessage('Title is required'), body('price').isFloat({ gt: 0 }).withMessage('Price must be provided and must greater that zero')], validateRequest
     , async (req: Request, res: Response) => {
         const ticket = await Ticket.findById(req.params.id);
         if (!ticket)

@@ -21,7 +21,7 @@ router.delete('/api/orders/:orderId', requireAuth, async (req: Request, res: Res
     /**check if the order request by the not the owner  */
     if (order.userId !== req.currentUser!.id)
         throw new NotAuthorizedError();
-    order.status = OrderStatus.Canceled;
+    order.status = OrderStatus.Cancelled;
     await order.save();
 
     /**publishe the order */
