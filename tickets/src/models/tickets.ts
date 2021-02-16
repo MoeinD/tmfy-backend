@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 //this inteface is for hte ticket before saving
 interface TicketAttrs {
     title: string;
-    price: string;
+    price: number;
     userId: string
 }
 
@@ -15,6 +16,7 @@ interface TicketDoc extends mongoose.Document {
     title: string;
     price: number;
     userId: string;
+    version: number;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -42,6 +44,9 @@ const ticketSchema = new mongoose.Schema({
         }
     }
 })
+
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (attr: TicketAttrs) => {
     return new Ticket(attr);
