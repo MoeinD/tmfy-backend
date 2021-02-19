@@ -3,10 +3,12 @@ import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 import { Order, OrderStatus } from '../../models/order';
 import { natsWrapper } from '../../nats-wrapper';
+import mongoose from 'mongoose';
 
 it('test that when user do not have the access can not delte the order', async () => {
     /**create a new ticket */
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'test',
         price: 20
     })
@@ -20,12 +22,13 @@ it('test that when user do not have the access can not delte the order', async (
     await request(app).delete(`/api/orders/${order.id}`).set('Cookie', user).send().expect(204);
     /**make suer the order has been canceled */
     const cancelleduser = await Order.findById(order.id);
-    expect(cancelleduser.status).toEqual(OrderStatus.Canceled);
+    expect(cancelleduser.status).toEqual(OrderStatus.Cancelled);
 })
 
 it('emits a order cacelled even', async () => {
     /**create a new ticket */
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'test',
         price: 20
     })
