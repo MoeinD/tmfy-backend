@@ -6,6 +6,7 @@ import { response } from 'express';
 
 const buildTicket = async () => {
     const ticket = Ticket.build({
+        id: 'test',
         title: 'concert',
         price: 30
     })
