@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import mongoose, { mongo } from 'mongoose';
 import { natsWrapper } from '../../nats-wrapper';
+import { Ticket } from '../../models/tickets';
 
 
 const api = '/api/tickets';
@@ -47,4 +48,13 @@ it('publishes and events ', async () => {
     /**we can check the update ticket from the db or make another get reqiest for checking the new value */
     await request(app).put(`${api}/${response.body.id}`).set('Cookie', cookie).send({ title: 'test new', price: 30 }).expect(200);
     expect(natsWrapper.client.publish).toHaveBeenCalled();
+})
+
+it('can not update the reserved ticket', async () => {
+    const cookie = global.signin();
+    const response = await request(app).post(api).set('Cookie', cookie).send({ title: 'test', price: 45 });
+    const createdTicket = await Ticket.findById(response.body.id);
+    createdTicket!.set({ orderId: mongoose.Types.ObjectId().toHexString() });
+    await createdTicket.save();
+    await request(app).put(`${api}/${response.body.id}`).set('Cookie', cookie).send({ title: 'new test ', price: 45 }).expect(400);
 })

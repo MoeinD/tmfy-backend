@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest, NotFoundError, requireAuth, NotAuthorizedError } from '@tmfyticket/common';
+import { validateRequest, NotFoundError, requireAuth, NotAuthorizedError, BadRequestError } from '@tmfyticket/common';
 import { Ticket } from '../models/tickets';
 import { TicketUpdatePublisher } from '../events/publishers/ticket-update-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -14,6 +14,9 @@ router.put('/api/tickets/:id', requireAuth,
         const ticket = await Ticket.findById(req.params.id);
         if (!ticket)
             throw new NotFoundError();
+
+        if (ticket.orderId)
+            throw new BadRequestError('Ticket has been reserved');
 
         if (ticket.userId !== req.currentUser!.id)
             throw new NotAuthorizedError();
