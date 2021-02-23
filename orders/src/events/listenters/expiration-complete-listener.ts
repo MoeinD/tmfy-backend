@@ -15,6 +15,14 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
         if (!order)
             throw new Error('Order not fount');
 
+        /**check if the order has been paid and complete 
+         * we do not need to cancel and just ack 
+         * without cancelling the order
+         */
+        if (order.status === OrderStatus.Complete) {
+            return msg.ack();
+        }
+
         order.set({
             status: OrderStatus.Cancelled,
         })
