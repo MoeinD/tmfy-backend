@@ -12,9 +12,11 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent>{
         console.log('watitng for this ms for creatig this job ', delay);
         await expirationQueue.add({
             orderId: data.id
-        }, {
-            delay
-        })
+        },
+            // {
+            //     delay
+            // }
+        )
 
         msg.ack();
     }
