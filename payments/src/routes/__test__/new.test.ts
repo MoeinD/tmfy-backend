@@ -61,12 +61,12 @@ it('return 400 when the order has been cnacelled ', async () => {
 it('returns a 204 with valid inputs ', async () => {
     const orderId = mongoose.Types.ObjectId().toHexString();
     const userId = mongoose.Types.ObjectId().toHexString();
-
+    const price = Math.floor(Math.random() * 100000);
 
     const order = Order.build({
         id: orderId,
         version: 0,
-        price: 30,
+        price,
         status: OrderStatus.Created,
         userId
     })
@@ -81,7 +81,7 @@ it('returns a 204 with valid inputs ', async () => {
 
     const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
     expect(chargeOptions.source).toEqual('tok_visa');
-    expect(chargeOptions.amount).toEqual(30 * 100);
+    expect(chargeOptions.amount).toEqual(price * 100);
     expect(chargeOptions.currency).toEqual('usd');
 
 })
