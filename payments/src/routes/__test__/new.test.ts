@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { Order } from '../../models/order';
 import { OrderStatus } from '@tmfyticket/common';
 import { stripe } from '../../stripe';
+import { Payment } from '../../models/payments';
 
 /**we need if we want to use mocking test */
 //jest.mock('../../stripe');
@@ -83,9 +84,12 @@ it('returns a 204 with valid inputs ', async () => {
 
     /**getting the lisst of the recent charges and try to find ours using the unique price */
     const stripeCharges = await (await stripe.charges.list({ limit: 2 })).data.find(charge => charge.amount === price * 100);
-    console.log('lastcharges', stripeCharges);
+
     expect(stripeCharges).toBeDefined();
     expect(stripeCharges.paid).toBeTruthy();
+
+    const payment = await Payment.findOne({ orderId });
+    expect(payment.stripeId).toEqual(stripeCharges.id);
 
     /**moking test that has been passed */
     // const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
