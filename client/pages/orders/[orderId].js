@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import StripeCheckout from 'react-stripe-checkout';
+
 const orderShow = ({ order }) => {
     const [timeLeft, setTimeLeft] = useState('');
 
@@ -22,6 +24,7 @@ const orderShow = ({ order }) => {
                 <h1>{order.id}</h1>
                 <h2>{order.status}</h2>
                 <h4>Time left to pay: {timeLeft} seconds</h4>
+                <StripeCheckout />
             </div>
         )
 }
