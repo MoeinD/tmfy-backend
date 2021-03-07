@@ -4,7 +4,7 @@ import useRequest from '../../hooks/use-request';
 const NewTicket = () => {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
-    const { } = useRequest({
+    const { doRequest, errors } = useRequest({
         url: '/api/tickets',
         method: 'post',
         body: {
@@ -22,10 +22,15 @@ const NewTicket = () => {
 
     }
 
+    const onSubmit = (event) => {
+        event.preventDefault();
+        doRequest();
+    }
+
     return (
         <div>
             <h1>Create a Ticket</h1>
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>Title</label>
                     <input value={title} onChange={(e) => setTitle(e.target.value)} className="form-control" />
