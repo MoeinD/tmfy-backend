@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, } from 'react';
 import useRequest from '../../hooks/use-request';
+import Router from 'next/router'
 
 const NewTicket = () => {
     const [title, setTitle] = useState('');
@@ -11,7 +12,7 @@ const NewTicket = () => {
             title,
             price
         },
-        onSuccess: (ticket) => console.log(ticket)
+        onSuccess: (ticket) => Router.push('/')
     })
     const onBlur = () => {
         const value = parseFloat(price);
@@ -37,7 +38,7 @@ const NewTicket = () => {
                 </div>
                 <div className="form-group">
                     <label>Price</label>
-                    <input value={price} onBlur={onBlur} onChange={(e) => setPrice(e.target.value)} className="form-control" />
+                    <input value={price} type="number" onBlur={onBlur} onChange={(e) => setPrice(e.target.value)} className="form-control" />
                 </div>
                 {errors}
                 <button className="btn btn-primary">Submit</button>
