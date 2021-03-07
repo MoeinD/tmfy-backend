@@ -7,7 +7,7 @@ import useRequest from '../../hooks/use-request';
 const orderShow = ({ order, currentUser }) => {
     const [timeLeft, setTimeLeft] = useState(0);
     const { doRequest, errors } = useRequest({
-        api: '/api/payments',
+        url: '/api/payments',
         method: 'post',
         body: {
             orderId: order.id
@@ -34,7 +34,7 @@ const orderShow = ({ order, currentUser }) => {
                 <h1>{order.id}</h1>
                 <h2>{order.status}</h2>
                 <h4>Time left to pay: {timeLeft} seconds</h4>
-                {{ errors }}
+
                 <StripeCheckout
                     amount={order.ticket.price * 100}
                     email={currentUser.email}
