@@ -1,7 +1,7 @@
 const OrderIndex = ({ orders }) => {
 
     const orderList = orders.map(order => {
-        <li key={order.id}>{order.ticket.title} - {order.status}</li>
+        return <li key={order.id}>{order.ticket.title} - {order.status}</li>
     })
     return <div>
         <h1>Order list</h1>
