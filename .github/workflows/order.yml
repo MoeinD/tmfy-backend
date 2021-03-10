@@ -1,0 +1,19 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+
+name: order
+
+
+on:
+  push:
+    branches: clientSide
+  
+jobs:
+  builds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd orders && npm install && npm run test:ci
