@@ -34,7 +34,7 @@ const orderShow = ({ order, currentUser }) => {
             <div>
                 <h1>{order.id}</h1>
                 <h2>{order.status}</h2>
-                <h4>Time left to pay: {timeLeft} seconds </h4>
+                <h4>Time left to pay: {timeLeft} seconds   </h4>
                 <StripeCheckout
                     amount={order.ticket.price * 100}
                     email={currentUser.email}
