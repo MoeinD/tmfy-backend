@@ -15,10 +15,8 @@ on:
     branches: clientSide
 
 jobs:
-  test:
-    runs-on: ubuntu-latest    
-
-    steps:
-      - name: Setup repo
+  build:
+    runs-on: ubuntu-latest   
+    steps:     
       - uses: actions/checkout@v2
       - run: cd auth && npm install && run test:ci
