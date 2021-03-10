@@ -11,8 +11,6 @@ name: tests
 on:
   push:
     branches: clientSide
-  pull_request:
-    branches: clientSide
 
 jobs:
   build:
